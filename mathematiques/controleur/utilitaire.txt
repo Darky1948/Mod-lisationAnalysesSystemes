@@ -1,0 +1,11 @@
+<script type="text/javascript">
+window.sitescriptdata = {}; 
+window.sitescriptdata.foo = ( <?php echo json_encode( $structure ); ?> );
+</script>
+For basic stuff, saves you doing an AJAX callback. Also, if you want to glue data to a DOM node, the "metaobject" way is something I really love.
+
+<div id="foobar">
+ <div><object class="metaobject">
+        <param name="data" value="<?php echo htmlentities(json_encode($data), ENT_QUOTES );?>" />
+ </object></div>
+</div> 
