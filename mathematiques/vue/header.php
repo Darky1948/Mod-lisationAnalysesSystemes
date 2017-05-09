@@ -28,5 +28,5 @@
 					<li role="presentation" <?php if($page == 'simulateur'){ echo 'class="active"';} ?>><a href="simulateur">Simulation</a></li>
 				</ul>
 				</nav>
-				<h3 class="text-muted">Projet de mathématiques</h3>
+				<h3 class="text-muted">Projet de mathématiques - MAS</h3>
 			</div>

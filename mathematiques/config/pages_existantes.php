@@ -14,6 +14,6 @@
 			'ws_processus_poisson'
 		);
 	$web_services = array (
-			'ws_generer_donnees_ordinateur_bord', 'ws_calcul_mtbf', 'ws_calcul_fiabilite_incident'
+			'ws_erreur_ordinateur'
 		);
 ?>

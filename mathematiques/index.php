@@ -83,6 +83,6 @@
 
 	/* Affichage du temps de génération */
 	$t1 = microtime();
-	echo '<!-- page genere en '.($t1 - $t0).' secondes -->';
+	//echo '<!-- page genere en '.($t1 - $t0).' secondes -->';
 
 ?>
