@@ -8,18 +8,11 @@
 	/**** OBJETS ****/
 	$c_modules = new c_modules();
 
-	if(isset($_SESSION['hashmap']) && isset($_SESSION['nbrEvenements'])) {
+	if(isset($_POST['valeur']) && $_POST['valeur'] == 1 && isset($_SESSION['hashmap']) && isset($_SESSION['nbrEvenements'])) {
 		$hashmap = $_SESSION['hashmap'];
 		foreach ($hashmap as $key => $value) {
-			if($value == 1){
-				echo 'ordinateur1 ';
-			}
-			if($value == 2){
-				echo 'ordinateur2 ';
-			}
-			if($value == 3){
-				echo 'ordinateur3 ';
-			}
+			echo $key . ' ';
 		}
-	}	
+	}
+	
 ?>

@@ -32,29 +32,56 @@
 <hr>
 
 <div id="ordinateurSimulation" class="row">
-  <div class="col-xs-4">
+  <div id="ordinateur1Valid" class="col-xs-4">
     <a href="#" class="thumbnail">
-      <img id="ordinateur1" src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_valid.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
+      <img src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_valid.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
     </a>
-    <div id="progressbar1" class="progress">
+    <div class="progress">
       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
     </div>
   </div>
-  <div class="col-xs-4">
+  <div id="ordinateur1Error" class="col-xs-4" style="display:none;">
     <a href="#" class="thumbnail">
-      <img id="ordinateur2" src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_valid.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
+      <img src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_error.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
+    </a>
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+    </div>
+    <div id="alert1"><h3 style="text-align:center;">Erreur du système</h3></div>
+  </div>
+  <div id="ordinateur2Valid" class="col-xs-4">
+    <a href="#" class="thumbnail">
+      <img src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_valid.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
+    </a>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+    </div>
+  </div>
+  <div id="ordinateur2Error" class="col-xs-4" style="display:none;">
+    <a href="#" class="thumbnail">
+      <img id="ordinateur2" src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_error.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
     </a>
     <div id="progressbar2" class="progress">
+      <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+    </div>
+    <div id="alert2"><h3 style="text-align:center;">Erreur du système</h3></div>
+  </div>
+  <div id="ordinateur3Valid" class="col-xs-4">
+    <a href="#" class="thumbnail">
+      <img src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_valid.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
+    </a>
+    <div class="progress">
       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
     </div>
   </div>
-  <div class="col-xs-4">
+  <div id="ordinateur3Error" class="col-xs-4" style="display:none;">
     <a href="#" class="thumbnail">
-      <img id="ordinateur3" src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_valid.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
+      <img src="<?php echo ADRESSE_ABSOLUE_URL . 'vue/images/ordinateur_error.png'; ?>" class="img-responsive img-rounded" alt="Cinque Terre" style="width:204px;height:auto;">
     </a>
-    <div id="progressbar3" class="progress">
-      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
     </div>
+    <div id="alert3"><h3 style="text-align:center;">Erreur du système</h3></div>
   </div>
 </div>
 
@@ -72,106 +99,114 @@
       <tbody> 
         <tr class="active"> 
           <th scope="row">MTBF en heures</th> 
-          <td><?php echo $MTBF; ?></td>
+          <td><?php if(isset($MTBF)){ echo $MTBF; } ?></td>
         </tr> 
         <tr> 
           <th scope="row">Fiabilité</th> 
-          <td><?php echo $fiabilite; ?></td>
+          <td><?php if(isset($fiabilite)){ echo $fiabilite; } ?></td>
         </tr> 
         <tr class="success"> 
           <th scope="row">Lambda</th> 
-          <td><?php echo $lambda; ?></td> 
+          <td><?php if(isset($lambda)){ echo $lambda; } ?></td> 
         </tr> 
         <tr> 
           <th scope="row">Bêta</th> 
-          <td><?php echo $beta; ?></td> 
+          <td><?php if(isset($beta)){ echo $beta; }?></td> 
         </tr> 
       </tbody> 
     </table>
   </div>
 </div>
 
+<hr>
+
+<div id="valeursErreurs"> 
+</div>
+<br />
+
+<iframe width="1150px" src="<?php echo ADRESSE_ABSOLUE_URL . 'ws_graphe_simulation'; ?>" style="border:none; height:300px; overflow-x: hidden; overflow-y: scroll"></iframe>  
+
 
 <script>
 
 $(document).ready(function() {
   var data;
-
+  var i=0;
+  var taille;
+  var times;
 
   var http = new XMLHttpRequest();
   var url = "http://localhost:8098/mathematiques/ws_erreur_ordinateur";
-  http.open("POST", url, true);
+  http.open("POST", url, false);
 
   //Send the proper header information along with the request
   http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
   http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState == 4 && http.status == 200) {
-        data = http.responseText.split(" ");
-        var i=0;
-        var taille = data.length;
-        var timeOutOn;
-        var timeOutOff;
-        console.log(taille);
-          setTimeout(function() {
-            if(i<taille){
-              console.log(i);
-              if(data[i] == 'ordinateur1') {
-                afficherErreur($('#progressbar1'), $('ordinateur1'));
-                
-              }
-              if(data[i] == 'ordinateur2') {
-                afficherErreur($('#progressbar2'), $('ordinateur2'));
-              }
-              if(data[i] == 'ordinateur3') {
-                afficherErreur($('#progressbar3'), $('ordinateur3'));
-              }
-              i=i+1;
-            }
-            
-          }, 2000);
-          //setTimeout(function() {
-           /* if(data[i] == 'ordinateur1') {
-              enleverErreur($('#progressbar1'), $('ordinateur1'));
-            }
-            if(data[i] == 'ordinateur2') {
-              enleverErreur($('#progressbar2'), $('ordinateur2'));
-            }
-            if(data[i] == 'ordinateur3') {
-              enleverErreur($('#progressbar3'), $('ordinateur3'));
-            }*/
-          //}, 3000);
-          //sleep(3000);
-        
+        data = http.responseText.split(" ");        
+        taille = data.length;
       }
   }
   http.send();
-  
 
-  function afficherErreur(progressBar, ordinateur) {
-    progressBar.children().removeClass("progress-bar-success").addClass("progress-bar-danger");
+  times = getTimeOrdinateur();
 
-    ordinateur.attr("src","http://localhost:8098/mathematiques/vue/images/ordinateur_error.png");
-    $('#ordinateurSimulation').append(definirMessageErreur(ordinateur.selector));
+  timeout();
+;
+  function timeout() {
+    setTimeout(function () {
+      if(data != ""){
+        $('#ordinateur1Valid').toggle();
+        $('#ordinateur1Error').toggle();
+        $('#ordinateur2Valid').toggle();
+        $('#ordinateur2Error').toggle();
+        $('#ordinateur3Valid').toggle();
+        $('#ordinateur3Error').toggle();
+        $('#valeursErreurs').empty();
+
+        if(i<taille){
+          if(data[i] == 'ordinateur1') {
+            $('#ordinateur1Valid').toggle();
+            $('#ordinateur1Error').toggle();
+            $('#valeursErreurs').append('Valeurs erreurs ' + times[i]);
+          }
+          if(data[i] == 'ordinateur2') {
+            $('#ordinateur2Valid').toggle();
+            $('#ordinateur2Error').toggle();
+            $('#valeursErreurs').append('Valeurs erreurs ' + times[i]);
+          }
+          if(data[i] == 'ordinateur3'){
+            $('#ordinateur3Valid').toggle();
+            $('#ordinateur3Error').toggle();
+            $('#valeursErreurs').append('Valeurs erreurs ' + times[i]);
+          }
+          console.log(data[i]);
+        }   
+        i++;
+        timeout();
+      }
+    }, 1000);
   }
 
-  function enleverErreur(progressBar, ordinateur) {
-    progressBar.children().removeClass("progress-bar-danger").addClass("progress-bar-success");
-    
-    ordinateur.attr("src","http://localhost:8098/mathematiques/vue/images/ordinateur_valid.png");
-    $('#alert').remove();
-  }
+  function getTimeOrdinateur(){
+    var http = new XMLHttpRequest();
+    var url = "http://localhost:8098/mathematiques/ws_get_time_ordinateur";
+    var values;
+    var params = "valeur=1";
 
-  function definirMessageErreur(selector) {
-    var contenu = "";
-    if(selector == 'ordinateur2') {
-      contenu = '<div id="alert" class="col-xs-4 col-md-offset-4"><h1 style="text-align:center;">Erreur du système</h1></div>';
-    }else if (selector == 'ordinateur1'){
-      contenu = '<div id="alert" class="col-xs-4 col-md-offset-0"><h1 style="text-align:center;">Erreur du système</h1></div>';
-    }else{
-      contenu = '<div id="alert" class="col-xs-4 col-md-offset-8"><h1 style="text-align:center;">Erreur du système</h1></div>';
+    http.open("POST", url, false);
+
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          values = http.responseText.split(" ");        
+        }
     }
-    return contenu;
+    http.send(params);
+    return values;
   }
 
 });

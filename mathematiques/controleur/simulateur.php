@@ -16,6 +16,7 @@
 
 	unset($_SESSION['hashmap']);
 	unset($_SESSION['nbrEvenements']);
+	unset($_SESSION['total']);
 
 	if(isset($_POST['nbrEvenements']) && isset($_POST['temps'])) {
 		// On récupère les paramètres
@@ -54,6 +55,7 @@
 		$valeurLoiExponentielle3 = $c_modules->loi_exponentielle($nbrEvenements, $lambda);
 		$tabValeurPoisson3 = $c_modules->processus_de_poisson($valeurLoiExponentielle3);
 
+		$total = array_unique(array_merge($tabValeurPoisson1, $tabValeurPoisson2, $tabValeurPoisson3));
 
 		//trie par ordre croissant dans hashmap
 		$hashmap = array();
@@ -69,8 +71,9 @@
 		}
 
 		ksort($hashmap);
-		
+
 		// Affectation des données à la session
+		$_SESSION['total'] = $total;
 		$_SESSION['hashmap'] = $hashmap;
 		$_SESSION['nbrEvenements'] = $nbrEvenements;
 	}

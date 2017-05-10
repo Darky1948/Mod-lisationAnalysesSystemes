@@ -11,9 +11,9 @@
 			'erreur', 'accueil', 'loi_uniforme', 'loi_exponentielle', 'loi_normale', 'loi_poisson', 'simulateur'
 		);
 	$processus_existants = array(
-			'ws_processus_poisson'
+			'ws_processus_poisson', 'ws_graphe_simulation'
 		);
 	$web_services = array (
-			'ws_erreur_ordinateur'
+			'ws_erreur_ordinateur', 'ws_get_time_ordinateur'
 		);
 ?>
