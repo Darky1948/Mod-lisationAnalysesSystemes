@@ -97,15 +97,23 @@
         </tr> 
       </thead> 
       <tbody> 
-        <tr class="active"> 
-          <th scope="row">MTBF en heures</th> 
+        <tr class="info"> 
+          <th scope="row">MTBF calculé en heures</th> 
           <td><?php if(isset($MTBF)){ echo $MTBF; } ?></td>
         </tr> 
+        <tr class="">
+          <th scope="row">MTBF mesuré en heures</th> 
+          <td><?php if(isset($MTBFPratique)){ echo $MTBFPratique; } ?></td>
+        </tr>
+        <tr class="info">
+          <th scope="row">Marge d'erreur entre MTBF calculé et mesuré</th> 
+          <td><?php if(isset($margeErreur)){ echo ($margeErreur*100) . ' %'; } ?></td>
+        </tr>
         <tr> 
           <th scope="row">Fiabilité</th> 
           <td><?php if(isset($fiabilite)){ echo $fiabilite; } ?></td>
         </tr> 
-        <tr class="success"> 
+        <tr class="info"> 
           <th scope="row">Lambda</th> 
           <td><?php if(isset($lambda)){ echo $lambda; } ?></td> 
         </tr> 

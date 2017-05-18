@@ -21,7 +21,8 @@
 	if(isset($_POST['nbrEvenements']) && isset($_POST['temps'])) {
 		// On récupère les paramètres
 		$nbrEvenements = filter_input(INPUT_POST, 'nbrEvenements', FILTER_VALIDATE_INT);
-		
+		$MTBFPratique = (float) 0;
+
 		// Nombre d'ordis
 		$beta = 3;
 		
@@ -32,7 +33,7 @@
 			// Fiabilité en pourcent
 			$fiabilite = filter_input(INPUT_POST, 'fiabilite', FILTER_VALIDATE_FLOAT);
 		}else {
-			$fiabilite = 1 - exp(-pow($lambda * $temps, $beta));
+			$fiabilite = exp(-pow($lambda * $temps, $beta)); // Weibull
 		}
 
 		if(isset($_POST['lambda']) && !empty($_POST['lambda'])) {
@@ -69,6 +70,33 @@
 		foreach ($tabValeurPoisson3 as $value) {
 			$hashmap[$value] = 3;
 		}
+
+		// Calcul du MTBF pratique
+		foreach ($tabValeurPoisson1 as $key => $value) {
+			if($key == 0){
+				$MTBFPratique += $value;
+			}else{
+				$MTBFPratique += $tabValeurPoisson1[$key] - $tabValeurPoisson1[$key-1];
+			}
+		}
+		foreach ($tabValeurPoisson2 as $key => $value) {
+			if($key == 0){
+				$MTBFPratique += $value;
+			}else{
+				$MTBFPratique += $tabValeurPoisson2[$key] - $tabValeurPoisson2[$key-1];
+			}
+		}
+		foreach ($tabValeurPoisson3 as $key => $value) {
+			if($key == 0){
+				$MTBFPratique += $value;
+			}else{
+				$MTBFPratique += $tabValeurPoisson3[$key] - $tabValeurPoisson3[$key-1];
+			}	
+		}
+
+		$MTBFPratique = $MTBFPratique / (count($tabValeurPoisson1) + count($tabValeurPoisson2) + count($tabValeurPoisson3));
+	
+		$margeErreur = abs(($MTBFPratique - $MTBF)/$MTBF);
 
 		ksort($hashmap);
 
